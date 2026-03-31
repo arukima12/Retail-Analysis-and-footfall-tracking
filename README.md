@@ -1,5 +1,9 @@
 # 🛒 Retail Analytics & Footfall Tracking
 
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![YOLOv8](https://img.shields.io/badge/Model-YOLOv8s-green.svg)](https://docs.ultralytics.com/)
+[![ByteTrack](https://img.shields.io/badge/Tracker-ByteTrack-orange.svg)](https://github.com/ifzhang/ByteTrack)
+
 <p align="center">
   <img src="assets/demo.gif" alt="Footfall Tracking Demo" width="600">
 </p>
@@ -9,26 +13,37 @@ Physical retail spaces often lack the accessible, data-driven insights common in
 
 By processing standard security camera footage, the system tracks individuals, assigns unique IDs, and counts them as they cross a virtual threshold. This transforms raw video into actionable data for store operations.
 
-## 💼 Business Impact & Use Cases
-This tool is designed with clear managerial and financial utility in mind:
-* **Operations & Management:** Identifies peak hours to optimize staff scheduling and reduce overhead.
-* **Marketing ROI:** Measures changes in store traffic during specific promotional campaigns or window display updates.
-* **Cost-Effective Finance:** Provides high-value, enterprise-level analytics using open-source models and standard CCTV footage, eliminating the need for expensive proprietary hardware.
+## 🏗️ System Architecture
+The system follows a modular computer vision pipeline, transitioning from raw pixel data to structured retail analytics.
 
-## ⚙️ Technical Stack
-* **Core Model:** YOLOv8s (Ultralytics) for high-speed, real-time object detection.
-* **Tracking Algorithm:** BoT-SORT / ByteTrack for maintaining persistent object IDs across video frames.
-* **Logic & Processing:** Python and OpenCV for drawing virtual boundaries, calculating vector crossings, and rendering video outputs.
-* **Environment:** Developed and optimized using Google Colab (T4 GPU).
+![System Architecture](assets/architecture.png)
 
-## 🚀 Key Features
-* **Directional Counting:** Accurately distinguishes between people entering (Walking UP) and exiting (Walking DOWN) a designated zone.
-* **Persistent Tracking:** Prevents double-counting by remembering individuals even if they are briefly obscured.
-* **Accessible Hardware:** Designed to run efficiently without requiring massive local computational power.
+**Key Components:**
+* **Inference:** YOLOv8s processes frames at 640x640 resolution to identify "Person" instances.
+* **Tracking:** ByteTrack associates detections across frames using a Kalman Filter to maintain persistent IDs.
+* **Analytics:** A spatial trigger monitors the Y-centroid of each ID relative to a virtual threshold to register crossing events.
+
+## 💼 Business Impact
+* **Operations:** Identifies peak hours to optimize staff scheduling.
+* **Marketing ROI:** Measures changes in store traffic during specific promotional campaigns.
+* **Cost-Effective:** Provides high-value analytics using existing CCTV infrastructure.
+
+## 📊 Experimental Results
+The model was evaluated using the **Mall Dataset**, simulating a high-density retail environment.
+
+* **Processing Speed:** ~30 FPS (Google Colab T4 GPU)
+* **Detection Accuracy:** High precision in crowded scenes with minimal ID-switching.
+
+### Real-Time Tracking Output
+![YOLOv8 Detection Output](assets/yolo_output.png)
+
+**Final Count (Test Sequence):**
+* **Walking UP:** 12
+* **Walking DOWN:** 28
 
 ## 🛠️ Installation & Setup
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/arukima12/Retail-Analysis-and-footfall-tracking.git](https://github.com/arukima12/Retail-Analysis-and-footfall-tracking.git)
+   git clone https://github.com/arukima12/Retail-Analysis-and-footfall-tracking.git
    cd Retail-Analysis-and-footfall-tracking
